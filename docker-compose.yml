@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    restart: "always"
+    ports:
+      - "3000:3000"
+    networks:
+      - default
+  db:
+    restart: always
+    image: postgres:latest
+    environment:
+        - PGUSER=postgres
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=123456
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+volumes:
+  pgdata:
+networks:
+   default:
+      driver: bridge
